@@ -64,7 +64,7 @@
     font-size: 0.65rem;
 }
 
-input[type = text]{
+input[type = number]{
     color: var(--Off_black);
     padding: 0.5rem 2rem 0.5rem 1rem;
     width: 7rem;
@@ -76,8 +76,12 @@ input[type = text]{
     outline: none;
 }
 
-input[type = text]::placeholder{
+input[type = number]::placeholder{
     opacity: 0.5;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
 }
 
 input.text-input:focus {
@@ -128,6 +132,7 @@ button.submit:hover{
         flex-direction: column;
         gap: 3rem;
         padding: 3rem 1.5rem;
+        border-radius: 1.3rem 1.3rem 7rem 1.3rem;
     }
     button.submit{
         margin: 0 auto;
@@ -135,15 +140,30 @@ button.submit:hover{
     }
     .input-date{
         margin-bottom: -5rem;
-        padding-bottom: 6rem;
+        padding-bottom: 4rem;
         font-size: 3rem;
-        justify-content: center;
+        gap: 0.3rem;
     }
-    .text-input{
-        width: 1rem;
-        padding: 1rem 0.2rem;
+
+    input[type = number]{
+        width: 90%;
+        padding: 0.65rem 0.75rem;
+        border-radius: 0.5rem;
     }
     .final-result{
         font-size: 1.7rem;
+    }
+}
+
+@media (max-width : 420px){
+    .final-result{
+        font-size: 1.3rem;
+    }
+    input[type = number]{
+        font-size: 1.3rem;
+    }
+    input[type = number]::placeholder{
+        opacity: 0.5;
+        font-size: 1.3rem;
     }
 }

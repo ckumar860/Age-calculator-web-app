@@ -7,28 +7,8 @@ const inputDate = document.querySelector("#day-input");
 let birthDate,birthMonth,birthYear;
 
 function isLeapbirthYear(){
-    return (birthYear % 4 == 0 && (birthYear % 100 == 0 && birthYear % 400 == 0)) ? true : false;
+    return (birthYear % 4 == 0 && !(birthYear % 400 == 0)) ? true : false;
 }
-
-// function birthYearValidityChk(){
-//     if(birthYear > currDate.getFullYear()){
-//         return false;
-//     }
-//     else if(birthYear === currDate.getFullYear()){
-//         if(birthMonth > currDate.getMonth()+1){
-//             return false;
-//         }
-//         else if(birthMonth === currDate.getMonth()+1 && birthDate > currDate.getDate()){    
-//             return false;
-//         }
-//         else{
-//             return true;
-//         }
-//     }
-//     else {
-//         return true;
-//     }
-// }
 
 const yearError = document.querySelector("#year-error");
 const monthError = document.querySelector("#month-error");
@@ -72,17 +52,37 @@ submitButton.addEventListener("click", () => {
         Error();
         return;
     }
+    resultantDays.innerHTML = "--";
+    resultantMonth.innerHTML = "--";
+    resultantYear.innerHTML = "--";
     
     birthDate = parseInt(inputDate.value,10);
     birthMonth = parseInt(inputMonth.value,10);
     birthYear = parseInt(inputYear.value,10);
 
+    if(birthYear == currDate.getFullYear()){
+        if(birthMonth > currDate.getMonth()+1){
+            monthError.innerHTML = "Must be in the past";
+            dayError.innerHTML = "Must be in the past";
+            Error();
+            return;
+        }
+        else if(birthMonth == currDate.getMonth()+1 && birthDate > currDate.getDate()){    
+            dayError.innerHTML = "Must be in the past";
+            Error();
+            return;
+        }  
+    }
     if((birthMonth == 2 && birthDate > 29 && isLeapbirthYear()) || (birthMonth == 2 && birthDate > 28 && !isLeapbirthYear())) {
         dayError.innerHTML = "Must be a valid day";
         Error();
     }
-    else if(birthDate < 1 || birthDate > noOfDays[birthMonth-1]){
+    else if(birthDate < 1 || birthDate > noOfDays[birthMonth-1] && birthMonth != 2){
         dayError.innerHTML = "Must be a valid day";
+        Error();
+    }
+    else if(birthYear > currDate.getFullYear()){
+        yearError.innerHTML = "Must be in the past";
         Error();
     }
     else{
@@ -100,21 +100,10 @@ function Error(){
     for (let i = 0; i < inputEle.length; i++) {
         inputEle[i].style.border = "1px solid hsl(0, 100%, 67%)";
     }
-}
-
-inputYear.addEventListener("input", () => {
-    birthYear = parseInt(inputYear.value,10);
-    if(birthYear > currDate.getFullYear()){
-        yearError.innerHTML = "Must be in the past";
-    }
-    else{
-        yearError.innerHTML = "";
-    }
-});
+};
 
 inputDate.addEventListener("input", () => {
-    birthDate = parseInt(inputDate.value,10);
-    if(birthDate < 1 && birthDate > 31){
+    if(inputDate.value < 1 || inputDate.value > 31){
         dayError.innerHTML = "Must be a valid day";
     }
     else{
@@ -129,4 +118,15 @@ inputMonth.addEventListener("input", () => {
     else{
         monthError.innerHTML = "";
     }
-})
+});
+
+inputYear.addEventListener("input", () => {
+    birthYear = parseInt(inputYear.value,10);
+    if(birthYear > currDate.getFullYear()){
+        yearError.innerHTML = "Must be in the past";
+    }
+    else{
+        yearError.innerHTML = "";
+    }
+});
+
